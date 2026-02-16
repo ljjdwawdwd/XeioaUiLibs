@@ -547,11 +547,24 @@ function RayfieldLibrary:MakeNotification(Settings)
 	})
 end
 
+function RayfieldLibrary:MakeWindow(Settings)
+	return RayfieldLibrary:CreateWindow(Settings)
+end
+
 function RayfieldLibrary:CreateWindow(Settings)
 	-- Compatibility for xeioa.lua
 	if Settings.Title then Settings.Name = Settings.Title end
 	if Settings.Subtitle then Settings.LoadingSubtitle = Settings.Subtitle end
 	Settings.LoadingTitle = Settings.Name
+
+	-- Orion Compatibility for Config
+	if Settings.ConfigFolder or Settings.SaveConfig then
+		Settings.ConfigurationSaving = {
+			Enabled = Settings.SaveConfig or false,
+			FolderName = Settings.ConfigFolder,
+			FileName = Settings.Name
+		}
+	end
 
 	if Rayfield:FindFirstChild('Loading') then
 		if getgenv and not getgenv().rayfieldCached then
@@ -660,6 +673,10 @@ function RayfieldLibrary:CreateWindow(Settings)
 	local FirstTab = false
 	local Window = {}
 	function Window:CreateTab(NameOrSettings, Image, Ext)
+		-- Orion Compatibility
+		if type(NameOrSettings) == "table" and NameOrSettings.Icon then
+			Image = NameOrSettings.Icon
+		end
 		local Name = NameOrSettings
 		local Header = nil
 		if type(NameOrSettings) == "table" then
@@ -731,39 +748,39 @@ function RayfieldLibrary:CreateWindow(Settings)
 			TabButton.BackgroundColor3 = SelectedTheme.TabBackground
 			TabButton.Image.ImageColor3 = SelectedTheme.TabTextColor
 			TabButton.Title.TextColor3 = SelectedTheme.TabTextColor
-			TweenService:Create(TabButton, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.7}):Play()
-			TweenService:Create(TabButton.Title, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {TextTransparency = 0.2}):Play()
-			TweenService:Create(TabButton.Image, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {ImageTransparency = 0.2}):Play()
-			TweenService:Create(TabButton.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 0.5}):Play()
+			TweenService:Create(TabButton, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.7}):Play()
+			TweenService:Create(TabButton.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0.2}):Play()
+			TweenService:Create(TabButton.Image, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 0.2}):Play()
+			TweenService:Create(TabButton.UIStroke, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Transparency = 0.5}):Play()
 		elseif not Ext then
 			FirstTab = Name
 			TabButton.BackgroundColor3 = SelectedTheme.TabBackgroundSelected
 			TabButton.Image.ImageColor3 = SelectedTheme.SelectedTabTextColor
 			TabButton.Title.TextColor3 = SelectedTheme.SelectedTabTextColor
-			TweenService:Create(TabButton.Image, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {ImageTransparency = 0}):Play()
-			TweenService:Create(TabButton, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0}):Play()
-			TweenService:Create(TabButton.Title, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {TextTransparency = 0}):Play()
+			TweenService:Create(TabButton.Image, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
+			TweenService:Create(TabButton, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+			TweenService:Create(TabButton.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
 		end
 
 		TabButton.Interact.MouseButton1Click:Connect(function()
 			if Minimised then return end
-			TweenService:Create(TabButton, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0}):Play()
-			TweenService:Create(TabButton.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
-			TweenService:Create(TabButton.Title, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {TextTransparency = 0}):Play()
-			TweenService:Create(TabButton.Image, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {ImageTransparency = 0}):Play()
-			TweenService:Create(TabButton, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = SelectedTheme.TabBackgroundSelected}):Play()
-			TweenService:Create(TabButton.Title, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {TextColor3 = SelectedTheme.SelectedTabTextColor}):Play()
-			TweenService:Create(TabButton.Image, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {ImageColor3 = SelectedTheme.SelectedTabTextColor}):Play()
+			TweenService:Create(TabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+			TweenService:Create(TabButton.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+			TweenService:Create(TabButton.Title, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+			TweenService:Create(TabButton.Image, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
+			TweenService:Create(TabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.TabBackgroundSelected}):Play()
+			TweenService:Create(TabButton.Title, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {TextColor3 = SelectedTheme.SelectedTabTextColor}):Play()
+			TweenService:Create(TabButton.Image, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageColor3 = SelectedTheme.SelectedTabTextColor}):Play()
 
 			for _, OtherTabButton in ipairs(TabList:GetChildren()) do
 				if OtherTabButton.Name ~= "Template" and OtherTabButton.ClassName == "Frame" and OtherTabButton ~= TabButton and OtherTabButton.Name ~= "Placeholder" then
-					TweenService:Create(OtherTabButton, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundColor3 = SelectedTheme.TabBackground}):Play()
-					TweenService:Create(OtherTabButton.Title, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {TextColor3 = SelectedTheme.TabTextColor}):Play()
-					TweenService:Create(OtherTabButton.Image, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {ImageColor3 = SelectedTheme.TabTextColor}):Play()
-					TweenService:Create(OtherTabButton, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.7}):Play()
-					TweenService:Create(OtherTabButton.Title, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {TextTransparency = 0.2}):Play()
-					TweenService:Create(OtherTabButton.Image, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {ImageTransparency = 0.2}):Play()
-					TweenService:Create(OtherTabButton.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 0.5}):Play()
+					TweenService:Create(OtherTabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.TabBackground}):Play()
+					TweenService:Create(OtherTabButton.Title, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {TextColor3 = SelectedTheme.TabTextColor}):Play()
+					TweenService:Create(OtherTabButton.Image, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageColor3 = SelectedTheme.TabTextColor}):Play()
+					TweenService:Create(OtherTabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.7}):Play()
+					TweenService:Create(OtherTabButton.Title, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {TextTransparency = 0.2}):Play()
+					TweenService:Create(OtherTabButton.Image, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 0.2}):Play()
+					TweenService:Create(OtherTabButton.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Transparency = 0.5}):Play()
 				end
 			end
 
@@ -1501,6 +1518,30 @@ function RayfieldLibrary:CreateWindow(Settings)
 			})
 		end
 
+		function Tab:AddLabel(text)
+			return Tab:CreateLabel(text)
+		end
+
+		function Tab:AddParagraph(paragraphSettings)
+			return Tab:CreateParagraph(paragraphSettings)
+		end
+
+		function Tab:AddBind(bindSettings)
+			local keyName = "Unknown"
+			if typeof(bindSettings.Default) == "EnumItem" then
+				keyName = bindSettings.Default.Name
+			elseif type(bindSettings.Default) == "string" then
+				keyName = bindSettings.Default
+			end
+
+			return Tab:CreateKeybind({
+				Name = bindSettings.Name,
+				CurrentKeybind = keyName,
+				HoldToInteract = bindSettings.Hold,
+				Callback = bindSettings.Callback
+			})
+		end
+
 		Rayfield.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
 			TabButton.UIStroke.Color = SelectedTheme.TabStroke
 			if Elements.UIPageLayout.CurrentPage == TabPage then
@@ -1520,6 +1561,10 @@ function RayfieldLibrary:CreateWindow(Settings)
 		end
 
 		return Tab
+	end
+
+	function Window:MakeTab(NameOrSettings)
+		return Window:CreateTab(NameOrSettings)
 	end
 
 	Elements.Visible = true
