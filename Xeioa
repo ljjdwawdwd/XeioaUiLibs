@@ -158,35 +158,35 @@ local RayfieldLibrary = {
 	Theme = {
 		Default = {
 			TextColor = Color3.fromRGB(240, 240, 240),
-			Background = Color3.fromRGB(25, 25, 25),
-			Topbar = Color3.fromRGB(34, 34, 34),
-			Shadow = Color3.fromRGB(20, 20, 20),
+			Background = Color3.fromRGB(25, 25, 25), -- Orion Main Color
+			Topbar = Color3.fromRGB(32, 32, 32), -- Orion Second Color
+			Shadow = Color3.fromRGB(15, 15, 15),
 			NotificationBackground = Color3.fromRGB(20, 20, 20),
 			NotificationActionsBackground = Color3.fromRGB(230, 230, 230),
-			TabBackground = Color3.fromRGB(80, 80, 80),
-			TabStroke = Color3.fromRGB(85, 85, 85),
-			TabBackgroundSelected = Color3.fromRGB(210, 210, 210),
+			TabBackground = Color3.fromRGB(40, 40, 40),
+			TabStroke = Color3.fromRGB(60, 60, 60), -- Orion Stroke
+			TabBackgroundSelected = Color3.fromRGB(255, 255, 255),
 			TabTextColor = Color3.fromRGB(240, 240, 240),
-			SelectedTabTextColor = Color3.fromRGB(50, 50, 50),
-			ElementBackground = Color3.fromRGB(35, 35, 35),
+			SelectedTabTextColor = Color3.fromRGB(0, 0, 0),
+			ElementBackground = Color3.fromRGB(32, 32, 32), -- Orion Second
 			ElementBackgroundHover = Color3.fromRGB(40, 40, 40),
-			SecondaryElementBackground = Color3.fromRGB(25, 25, 25),
-			ElementStroke = Color3.fromRGB(50, 50, 50),
-			SecondaryElementStroke = Color3.fromRGB(40, 40, 40),
-			SliderBackground = Color3.fromRGB(50, 138, 220),
-			SliderProgress = Color3.fromRGB(50, 138, 220),
-			SliderStroke = Color3.fromRGB(58, 163, 255),
-			ToggleBackground = Color3.fromRGB(30, 30, 30),
-			ToggleEnabled = Color3.fromRGB(0, 146, 214),
-			ToggleDisabled = Color3.fromRGB(100, 100, 100),
-			ToggleEnabledStroke = Color3.fromRGB(0, 170, 255),
-			ToggleDisabledStroke = Color3.fromRGB(125, 125, 125),
-			ToggleEnabledOuterStroke = Color3.fromRGB(100, 100, 100),
-			ToggleDisabledOuterStroke = Color3.fromRGB(65, 65, 65),
-			DropdownSelected = Color3.fromRGB(40, 40, 40),
-			DropdownUnselected = Color3.fromRGB(30, 30, 30),
-			InputBackground = Color3.fromRGB(30, 30, 30),
-			InputStroke = Color3.fromRGB(65, 65, 65),
+			SecondaryElementBackground = Color3.fromRGB(32, 32, 32),
+			ElementStroke = Color3.fromRGB(60, 60, 60), -- Orion Stroke
+			SecondaryElementStroke = Color3.fromRGB(60, 60, 60),
+			SliderBackground = Color3.fromRGB(40, 40, 40),
+			SliderProgress = Color3.fromRGB(255, 255, 255), -- White accent
+			SliderStroke = Color3.fromRGB(60, 60, 60),
+			ToggleBackground = Color3.fromRGB(40, 40, 40),
+			ToggleEnabled = Color3.fromRGB(255, 255, 255),
+			ToggleDisabled = Color3.fromRGB(40, 40, 40),
+			ToggleEnabledStroke = Color3.fromRGB(255, 255, 255),
+			ToggleDisabledStroke = Color3.fromRGB(60, 60, 60),
+			ToggleEnabledOuterStroke = Color3.fromRGB(60, 60, 60),
+			ToggleDisabledOuterStroke = Color3.fromRGB(60, 60, 60),
+			DropdownSelected = Color3.fromRGB(50, 50, 50),
+			DropdownUnselected = Color3.fromRGB(32, 32, 32),
+			InputBackground = Color3.fromRGB(32, 32, 32),
+			InputStroke = Color3.fromRGB(60, 60, 60),
 			PlaceholderColor = Color3.fromRGB(178, 178, 178)
 		}
 	}
@@ -536,6 +536,15 @@ function RayfieldLibrary:Notify(data)
 		newNotification.Visible = false
 		newNotification:Destroy()
 	end)
+end
+
+function RayfieldLibrary:MakeNotification(Settings)
+	return RayfieldLibrary:Notify({
+		Title = Settings.Name or "Notification",
+		Content = Settings.Content or "No content",
+		Image = Settings.Image,
+		Duration = Settings.Time or 5
+	})
 end
 
 function RayfieldLibrary:CreateWindow(Settings)
@@ -1437,6 +1446,15 @@ function RayfieldLibrary:CreateWindow(Settings)
 				Section.Title.Text = NewSection
 			end
 			return SectionValue
+		end
+
+		function Tab:AddSection(SectionSettings)
+			local text = SectionSettings
+			if type(SectionSettings) == "table" then
+				text = SectionSettings.Name
+			end
+			Tab:CreateSection(text)
+			return Tab
 		end
 
 		-- Adapters for xeioa.lua style calls
