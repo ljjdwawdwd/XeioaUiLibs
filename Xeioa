@@ -566,14 +566,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 		}
 	end
 
-	if Rayfield:FindFirstChild('Loading') then
-		if getgenv and not getgenv().rayfieldCached then
-			Rayfield.Enabled = true
-			Rayfield.Loading.Visible = true
-			task.wait(1.4)
-			Rayfield.Loading.Visible = false
-		end
-	end
+	-- Removed Rayfield Loading Screen
 
 	if getgenv then getgenv().rayfieldCached = true end
 
@@ -1602,6 +1595,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 	listLayout.Padding = UDim.new(0, 5)
 	listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 	listLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	TabList.ZIndex = 2
 
 	Elements.Position = UDim2.new(0, 185, 0, 55)
 	Elements.Size = UDim2.new(1, -195, 1, -65)
