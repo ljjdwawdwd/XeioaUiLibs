@@ -689,7 +689,9 @@ function RayfieldLibrary:CreateWindow(Settings)
 		TabButton.Title.Text = Name
 		TabButton.Parent = TabList
 		TabButton.Title.TextWrapped = false
-		TabButton.Size = UDim2.new(0, TabButton.Title.TextBounds.X + 30, 0, 30)
+		TabButton.Size = UDim2.new(1, 0, 0, 35) -- Full width for sidebar
+		TabButton.Title.TextXAlignment = Enum.TextXAlignment.Left
+		TabButton.Title.Position = UDim2.new(0, 15, 0.5, 0)
 
 		if Image and Image ~= 0 then
 			if typeof(Image) == 'string' and Icons then
@@ -701,10 +703,9 @@ function RayfieldLibrary:CreateWindow(Settings)
 				TabButton.Image.Image = getAssetUri(Image)
 			end
 			TabButton.Title.AnchorPoint = Vector2.new(0, 0.5)
-			TabButton.Title.Position = UDim2.new(0, 37, 0.5, 0)
+			TabButton.Title.Position = UDim2.new(0, 45, 0.5, 0)
 			TabButton.Image.Visible = true
-			TabButton.Title.TextXAlignment = Enum.TextXAlignment.Left
-			TabButton.Size = UDim2.new(0, TabButton.Title.TextBounds.X + 52, 0, 30)
+			TabButton.Image.Position = UDim2.new(0, 10, 0.5, 0)
 		end
 
 		TabButton.BackgroundTransparency = 1
@@ -748,39 +749,41 @@ function RayfieldLibrary:CreateWindow(Settings)
 			TabButton.BackgroundColor3 = SelectedTheme.TabBackground
 			TabButton.Image.ImageColor3 = SelectedTheme.TabTextColor
 			TabButton.Title.TextColor3 = SelectedTheme.TabTextColor
-			TweenService:Create(TabButton, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.7}):Play()
+			TweenService:Create(TabButton, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
 			TweenService:Create(TabButton.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0.2}):Play()
 			TweenService:Create(TabButton.Image, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 0.2}):Play()
 			TweenService:Create(TabButton.UIStroke, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Transparency = 0.5}):Play()
 		elseif not Ext then
 			FirstTab = Name
-			TabButton.BackgroundColor3 = SelectedTheme.TabBackgroundSelected
+			TabButton.BackgroundColor3 = SelectedTheme.TabBackground
 			TabButton.Image.ImageColor3 = SelectedTheme.SelectedTabTextColor
 			TabButton.Title.TextColor3 = SelectedTheme.SelectedTabTextColor
 			TweenService:Create(TabButton.Image, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
-			TweenService:Create(TabButton, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+			TweenService:Create(TabButton, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
 			TweenService:Create(TabButton.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
 		end
 
 		TabButton.Interact.MouseButton1Click:Connect(function()
 			if Minimised then return end
-			TweenService:Create(TabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+			TweenService:Create(TabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
 			TweenService:Create(TabButton.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 			TweenService:Create(TabButton.Title, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
 			TweenService:Create(TabButton.Image, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
-			TweenService:Create(TabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.TabBackgroundSelected}):Play()
+			TweenService:Create(TabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.TabBackground}):Play()
 			TweenService:Create(TabButton.Title, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {TextColor3 = SelectedTheme.SelectedTabTextColor}):Play()
 			TweenService:Create(TabButton.Image, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageColor3 = SelectedTheme.SelectedTabTextColor}):Play()
+			TweenService:Create(TabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Position = UDim2.new(0, 5, 0, 0)}):Play() -- Indent effect
 
 			for _, OtherTabButton in ipairs(TabList:GetChildren()) do
 				if OtherTabButton.Name ~= "Template" and OtherTabButton.ClassName == "Frame" and OtherTabButton ~= TabButton and OtherTabButton.Name ~= "Placeholder" then
 					TweenService:Create(OtherTabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.TabBackground}):Play()
 					TweenService:Create(OtherTabButton.Title, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {TextColor3 = SelectedTheme.TabTextColor}):Play()
 					TweenService:Create(OtherTabButton.Image, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageColor3 = SelectedTheme.TabTextColor}):Play()
-					TweenService:Create(OtherTabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.7}):Play()
+					TweenService:Create(OtherTabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
 					TweenService:Create(OtherTabButton.Title, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {TextTransparency = 0.2}):Play()
 					TweenService:Create(OtherTabButton.Image, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 0.2}):Play()
 					TweenService:Create(OtherTabButton.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Transparency = 0.5}):Play()
+					TweenService:Create(OtherTabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Position = UDim2.new(0, 0, 0, 0)}):Play() -- Reset indent
 				end
 			end
 
@@ -1545,7 +1548,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 		Rayfield.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
 			TabButton.UIStroke.Color = SelectedTheme.TabStroke
 			if Elements.UIPageLayout.CurrentPage == TabPage then
-				TabButton.BackgroundColor3 = SelectedTheme.TabBackgroundSelected
+				TabButton.BackgroundColor3 = SelectedTheme.TabBackground
 				TabButton.Image.ImageColor3 = SelectedTheme.SelectedTabTextColor
 				TabButton.Title.TextColor3 = SelectedTheme.SelectedTabTextColor
 			else
@@ -1567,17 +1570,64 @@ function RayfieldLibrary:CreateWindow(Settings)
 		return Window:CreateTab(NameOrSettings)
 	end
 
+	-- Sidebar Layout Overrides
+	TabList.Position = UDim2.new(0, 10, 0, 55)
+	TabList.Size = UDim2.new(0, 150, 1, -65)
+	local listLayout = TabList:FindFirstChildOfClass("UIListLayout")
+	if listLayout then
+		listLayout.FillDirection = Enum.FillDirection.Vertical
+		listLayout.Padding = UDim.new(0, 5)
+		listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	end
+
+	Elements.Position = UDim2.new(0, 170, 0, 55)
+	Elements.Size = UDim2.new(1, -180, 1, -65)
+
 	Elements.Visible = true
 
-	task.wait(1.1)
-	TweenService:Create(Main, TweenInfo.new(0.7, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {Size = UDim2.new(0, 390, 0, 90)}):Play()
-	task.wait(0.3)
-	TweenService:Create(LoadingFrame.Title, TweenInfo.new(0.2, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
-	TweenService:Create(LoadingFrame.Subtitle, TweenInfo.new(0.2, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
-	TweenService:Create(LoadingFrame.Version, TweenInfo.new(0.2, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
-	task.wait(0.1)
-	TweenService:Create(Main, TweenInfo.new(0.6, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {Size = useMobileSizing and UDim2.new(0, 500, 0, 275) or UDim2.new(0, 500, 0, 475)}):Play()
+	-- Custom Loading Screen
+	LoadingFrame.Title.Visible = false
+	LoadingFrame.Subtitle.Visible = false
+	LoadingFrame.Version.Visible = false
+
+	local LoadingRing = Instance.new("Frame")
+	LoadingRing.Name = "LoadingBarBack"
+	LoadingRing.Size = UDim2.new(0, 200, 0, 4)
+	LoadingRing.Position = UDim2.new(0.5, -100, 0.5, 0)
+	LoadingRing.BackgroundColor3 = SelectedTheme.ElementStroke
+	LoadingRing.BorderSizePixel = 0
+	LoadingRing.Parent = LoadingFrame
+
+	local LoadingFill = Instance.new("Frame")
+	LoadingFill.Name = "LoadingBarFill"
+	LoadingFill.Size = UDim2.new(0, 0, 1, 0)
+	LoadingFill.BackgroundColor3 = SelectedTheme.TextColor
+	LoadingFill.BorderSizePixel = 0
+	LoadingFill.Parent = LoadingRing
+
+	local LoadingText = Instance.new("TextLabel")
+	LoadingText.Size = UDim2.new(1, 0, 0, 20)
+	LoadingText.Position = UDim2.new(0, 0, 0, -25)
+	LoadingText.BackgroundTransparency = 1
+	LoadingText.Text = "XEIOA"
+	LoadingText.TextColor3 = SelectedTheme.TextColor
+	LoadingText.Font = Enum.Font.GothamBold
+	LoadingText.TextSize = 24
+	LoadingText.Parent = LoadingRing
+
+	task.wait(0.5)
+	TweenService:Create(Main, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0}):Play()
 	TweenService:Create(Main.Shadow.Image, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 0.6}):Play()
+
+	TweenService:Create(LoadingFill, TweenInfo.new(1.5, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut), {Size = UDim2.new(1, 0, 1, 0)}):Play()
+	task.wait(1.6)
+
+	TweenService:Create(LoadingRing, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
+	TweenService:Create(LoadingFill, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
+	TweenService:Create(LoadingText, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
+
+	task.wait(0.2)
+	TweenService:Create(Main, TweenInfo.new(0.6, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {Size = useMobileSizing and UDim2.new(0, 600, 0, 350) or UDim2.new(0, 650, 0, 500)}):Play()
 
 	Topbar.BackgroundTransparency = 1
 	Topbar.Divider.Size = UDim2.new(0, 0, 0, 1)
