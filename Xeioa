@@ -749,37 +749,40 @@ function RayfieldLibrary:CreateWindow(Settings)
 			TabButton.BackgroundColor3 = SelectedTheme.TabBackground
 			TabButton.Image.ImageColor3 = SelectedTheme.TabTextColor
 			TabButton.Title.TextColor3 = SelectedTheme.TabTextColor
-			TweenService:Create(TabButton, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+			TweenService:Create(TabButton, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play() -- Make unselected tabs transparent
 			TweenService:Create(TabButton.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0.2}):Play()
 			TweenService:Create(TabButton.Image, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 0.2}):Play()
 			TweenService:Create(TabButton.UIStroke, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Transparency = 0.5}):Play()
 		elseif not Ext then
 			FirstTab = Name
-			TabButton.BackgroundColor3 = SelectedTheme.TabBackground
+			TabButton.BackgroundColor3 = SelectedTheme.TabBackgroundSelected
 			TabButton.Image.ImageColor3 = SelectedTheme.SelectedTabTextColor
 			TabButton.Title.TextColor3 = SelectedTheme.SelectedTabTextColor
+			TabButton.Position = UDim2.new(0, 5, 0, 0) -- Indent selected tab
 			TweenService:Create(TabButton.Image, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
-			TweenService:Create(TabButton, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+			TweenService:Create(TabButton, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play() -- Make selected tab opaque
 			TweenService:Create(TabButton.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
 		end
 
 		TabButton.Interact.MouseButton1Click:Connect(function()
 			if Minimised then return end
-			TweenService:Create(TabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+			-- Animate the selected tab
+			TweenService:Create(TabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
 			TweenService:Create(TabButton.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 			TweenService:Create(TabButton.Title, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
 			TweenService:Create(TabButton.Image, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
-			TweenService:Create(TabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.TabBackground}):Play()
+			TweenService:Create(TabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.TabBackgroundSelected}):Play()
 			TweenService:Create(TabButton.Title, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {TextColor3 = SelectedTheme.SelectedTabTextColor}):Play()
 			TweenService:Create(TabButton.Image, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageColor3 = SelectedTheme.SelectedTabTextColor}):Play()
 			TweenService:Create(TabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Position = UDim2.new(0, 5, 0, 0)}):Play() -- Indent effect
 
+			-- Animate other tabs to be unselected
 			for _, OtherTabButton in ipairs(TabList:GetChildren()) do
 				if OtherTabButton.Name ~= "Template" and OtherTabButton.ClassName == "Frame" and OtherTabButton ~= TabButton and OtherTabButton.Name ~= "Placeholder" then
 					TweenService:Create(OtherTabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.TabBackground}):Play()
 					TweenService:Create(OtherTabButton.Title, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {TextColor3 = SelectedTheme.TabTextColor}):Play()
 					TweenService:Create(OtherTabButton.Image, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageColor3 = SelectedTheme.TabTextColor}):Play()
-					TweenService:Create(OtherTabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+					TweenService:Create(OtherTabButton, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play() -- Make unselected tabs transparent
 					TweenService:Create(OtherTabButton.Title, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {TextTransparency = 0.2}):Play()
 					TweenService:Create(OtherTabButton.Image, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 0.2}):Play()
 					TweenService:Create(OtherTabButton.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Transparency = 0.5}):Play()
@@ -789,6 +792,18 @@ function RayfieldLibrary:CreateWindow(Settings)
 
 			if Elements.UIPageLayout.CurrentPage ~= TabPage then
 				Elements.UIPageLayout:JumpTo(TabPage)
+			end
+		end)
+
+		TabButton.Interact.MouseEnter:Connect(function()
+			if Elements.UIPageLayout.CurrentPage ~= TabPage then
+				TweenService:Create(TabButton, TweenInfo.new(0.3, Enum.EasingStyle.Quint), { BackgroundTransparency = 0.8 }):Play()
+			end
+		end)
+
+		TabButton.Interact.MouseLeave:Connect(function()
+			if Elements.UIPageLayout.CurrentPage ~= TabPage then
+				TweenService:Create(TabButton, TweenInfo.new(0.3, Enum.EasingStyle.Quint), { BackgroundTransparency = 1 }):Play()
 			end
 		end)
 
