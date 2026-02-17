@@ -861,7 +861,8 @@ function OrionLib:MakeWindow(WindowConfig)
                 local Button = {}
 
                 local Click = SetProps(MakeElement("Button"), {
-                    Size = UDim2.new(1, 0, 1, 0)
+					Size = UDim2.new(1, 0, 1, 0),
+					ZIndex = 50
                 })
 
                 local ButtonFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 5), {
@@ -890,7 +891,7 @@ function OrionLib:MakeWindow(WindowConfig)
                     TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = OrionLib.Themes[OrionLib.SelectedTheme].Second}):Play()
                 end)
 
-                AddConnection(Click.MouseButton1Up, function()
+				AddConnection(Click.MouseButton1Click, function()
                     TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 3)}):Play()
                     spawn(function()
                         ButtonConfig.Callback()
@@ -919,7 +920,8 @@ function OrionLib:MakeWindow(WindowConfig)
                 local Toggle = {Value = ToggleConfig.Default, Save = ToggleConfig.Save}
 
                 local Click = SetProps(MakeElement("Button"), {
-                    Size = UDim2.new(1, 0, 1, 0)
+					Size = UDim2.new(1, 0, 1, 0),
+					ZIndex = 50
                 })
 
                 local ToggleBox = SetChildren(SetProps(MakeElement("RoundFrame", ToggleConfig.Color, 0, 4), {
@@ -974,7 +976,7 @@ function OrionLib:MakeWindow(WindowConfig)
                     TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = OrionLib.Themes[OrionLib.SelectedTheme].Second}):Play()
                 end)
 
-                AddConnection(Click.MouseButton1Up, function()
+				AddConnection(Click.MouseButton1Click, function()
                     TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 3)}):Play()
                     SaveCfg(game.GameId)
                     Toggle:Set(not Toggle.Value)
@@ -1112,7 +1114,8 @@ function OrionLib:MakeWindow(WindowConfig)
                 }), "Divider")
 
                 local Click = SetProps(MakeElement("Button"), {
-                    Size = UDim2.new(1, 0, 1, 0)
+					Size = UDim2.new(1, 0, 1, 0),
+					ZIndex = 50
                 })
 
                 local DropdownFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 5), {
@@ -1251,7 +1254,8 @@ function OrionLib:MakeWindow(WindowConfig)
                 local Holding = false
 
                 local Click = SetProps(MakeElement("Button"), {
-                    Size = UDim2.new(1, 0, 1, 0)
+					Size = UDim2.new(1, 0, 1, 0),
+					ZIndex = 50
                 })
 
                 local BindBox = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 4), {
@@ -1288,12 +1292,10 @@ function OrionLib:MakeWindow(WindowConfig)
                     TweenService:Create(BindBox, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, BindBox.Value.TextBounds.X + 16, 0, 24)}):Play()
                 end)
 
-                AddConnection(Click.InputEnded, function(Input)
-                    if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                        if Bind.Binding then return end
-                        Bind.Binding = true
-                        BindBox.Value.Text = ""
-                    end
+				AddConnection(Click.MouseButton1Click, function()
+					if Bind.Binding then return end
+					Bind.Binding = true
+					BindBox.Value.Text = ""
                 end)
 
                 AddConnection(UserInputService.InputBegan, function(Input)
@@ -1369,7 +1371,8 @@ function OrionLib:MakeWindow(WindowConfig)
                 TextboxConfig.Callback = TextboxConfig.Callback or function() end
 
                 local Click = SetProps(MakeElement("Button"), {
-                    Size = UDim2.new(1, 0, 1, 0)
+					Size = UDim2.new(1, 0, 1, 0),
+					ZIndex = 50
                 })
 
                 local TextboxActual = AddThemeObject(Create("TextBox", {
@@ -1431,7 +1434,7 @@ function OrionLib:MakeWindow(WindowConfig)
                     TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = OrionLib.Themes[OrionLib.SelectedTheme].Second}):Play()
                 end)
 
-                AddConnection(Click.MouseButton1Up, function()
+				AddConnection(Click.MouseButton1Click, function()
                     TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 3)}):Play()
                     TextboxActual:CaptureFocus()
                 end)
@@ -1505,7 +1508,8 @@ function OrionLib:MakeWindow(WindowConfig)
                 })
 
                 local Click = SetProps(MakeElement("Button"), {
-                    Size = UDim2.new(1, 0, 1, 0)
+					Size = UDim2.new(1, 0, 1, 0),
+					ZIndex = 50
                 })
 
                 local ColorpickerBox = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 4), {
