@@ -891,15 +891,13 @@ function OrionLib:MakeWindow(WindowConfig)
                     TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = OrionLib.Themes[OrionLib.SelectedTheme].Second}):Play()
                 end)
 
-				AddConnection(Click.MouseButton1Click, function()
-                    TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 3)}):Play()
-                    spawn(function()
-                        ButtonConfig.Callback()
-                    end)
-                end)
-
-                AddConnection(Click.MouseButton1Down, function()
-                    TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 6, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 6, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 6)}):Play()
+				AddConnection(Click.InputBegan, function(Input)
+					if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+						TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 3)}):Play()
+						spawn(function()
+							ButtonConfig.Callback()
+						end)
+					end
                 end)
 
                 function Button:Set(ButtonText)
@@ -976,14 +974,12 @@ function OrionLib:MakeWindow(WindowConfig)
                     TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = OrionLib.Themes[OrionLib.SelectedTheme].Second}):Play()
                 end)
 
-				AddConnection(Click.MouseButton1Click, function()
-                    TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 3)}):Play()
-                    SaveCfg(game.GameId)
-                    Toggle:Set(not Toggle.Value)
-                end)
-
-                AddConnection(Click.MouseButton1Down, function()
-                    TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 6, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 6, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 6)}):Play()
+				AddConnection(Click.InputBegan, function(Input)
+					if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+						TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 3)}):Play()
+						SaveCfg(game.GameId)
+						Toggle:Set(not Toggle.Value)
+					end
                 end)
 
                 if ToggleConfig.Flag then
@@ -1180,10 +1176,12 @@ function OrionLib:MakeWindow(WindowConfig)
                             ClipsDescendants = true
                         }), "Divider")
 
-                        AddConnection(OptionBtn.MouseButton1Click, function()
-                            Dropdown:Set(Option)
-                            SaveCfg(game.GameId)
-                        end)
+						AddConnection(OptionBtn.InputBegan, function(Input)
+							if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+								Dropdown:Set(Option)
+								SaveCfg(game.GameId)
+							end
+						end)
 
                         Dropdown.Buttons[Option] = OptionBtn
                     end
@@ -1224,15 +1222,17 @@ function OrionLib:MakeWindow(WindowConfig)
                     return DropdownConfig.Callback(Dropdown.Value)
                 end
 
-                AddConnection(Click.MouseButton1Click, function()
-                    Dropdown.Toggled = not Dropdown.Toggled
-                    DropdownFrame.F.Line.Visible = Dropdown.Toggled
-                    TweenService:Create(DropdownFrame.F.Ico,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Rotation = Dropdown.Toggled and 180 or 0}):Play()
-                    if #Dropdown.Options > MaxElements then
-                        TweenService:Create(DropdownFrame,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Size = Dropdown.Toggled and UDim2.new(1, 0, 0, 38 + (MaxElements * 28)) or UDim2.new(1, 0, 0, 38)}):Play()
-                    else
-                        TweenService:Create(DropdownFrame,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Size = Dropdown.Toggled and UDim2.new(1, 0, 0, DropdownList.AbsoluteContentSize.Y + 38) or UDim2.new(1, 0, 0, 38)}):Play()
-                    end
+				AddConnection(Click.InputBegan, function(Input)
+					if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+						Dropdown.Toggled = not Dropdown.Toggled
+						DropdownFrame.F.Line.Visible = Dropdown.Toggled
+						TweenService:Create(DropdownFrame.F.Ico,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Rotation = Dropdown.Toggled and 180 or 0}):Play()
+						if #Dropdown.Options > MaxElements then
+							TweenService:Create(DropdownFrame,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Size = Dropdown.Toggled and UDim2.new(1, 0, 0, 38 + (MaxElements * 28)) or UDim2.new(1, 0, 0, 38)}):Play()
+						else
+							TweenService:Create(DropdownFrame,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Size = Dropdown.Toggled and UDim2.new(1, 0, 0, DropdownList.AbsoluteContentSize.Y + 38) or UDim2.new(1, 0, 0, 38)}):Play()
+						end
+					end
                 end)
 
                 Dropdown:Refresh(Dropdown.Options, false)
@@ -1292,10 +1292,12 @@ function OrionLib:MakeWindow(WindowConfig)
                     TweenService:Create(BindBox, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, BindBox.Value.TextBounds.X + 16, 0, 24)}):Play()
                 end)
 
-				AddConnection(Click.MouseButton1Click, function()
-					if Bind.Binding then return end
-					Bind.Binding = true
-					BindBox.Value.Text = ""
+				AddConnection(Click.InputBegan, function(Input)
+					if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+						if Bind.Binding then return end
+						Bind.Binding = true
+						BindBox.Value.Text = ""
+					end
                 end)
 
                 AddConnection(UserInputService.InputBegan, function(Input)
@@ -1340,14 +1342,6 @@ function OrionLib:MakeWindow(WindowConfig)
 
                 AddConnection(Click.MouseLeave, function()
                     TweenService:Create(BindFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = OrionLib.Themes[OrionLib.SelectedTheme].Second}):Play()
-                end)
-
-                AddConnection(Click.MouseButton1Up, function()
-                    TweenService:Create(BindFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 3)}):Play()
-                end)
-
-                AddConnection(Click.MouseButton1Down, function()
-                    TweenService:Create(BindFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 6, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 6, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 6)}):Play()
                 end)
 
                 function Bind:Set(Key)
@@ -1434,14 +1428,12 @@ function OrionLib:MakeWindow(WindowConfig)
                     TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = OrionLib.Themes[OrionLib.SelectedTheme].Second}):Play()
                 end)
 
-				AddConnection(Click.MouseButton1Click, function()
-                    TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 3)}):Play()
-                    TextboxActual:CaptureFocus()
-                end)
-
-                AddConnection(Click.MouseButton1Down, function()
-                    TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 6, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 6, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 6)}):Play()
-                end)
+				AddConnection(Click.InputBegan, function(Input)
+					if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+						TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(OrionLib.Themes[OrionLib.SelectedTheme].Second.R * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.G * 255 + 3, OrionLib.Themes[OrionLib.SelectedTheme].Second.B * 255 + 3)}):Play()
+						TextboxActual:CaptureFocus()
+					end
+				end)
             end 
             function ElementFunction:AddColorpicker(ColorpickerConfig)
                 ColorpickerConfig = ColorpickerConfig or {}
@@ -1548,12 +1540,14 @@ function OrionLib:MakeWindow(WindowConfig)
                     AddThemeObject(MakeElement("Stroke"), "Stroke"),
                 }), "Second")
 
-                AddConnection(Click.MouseButton1Click, function()
-                    Colorpicker.Toggled = not Colorpicker.Toggled
-                    TweenService:Create(ColorpickerFrame,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Size = Colorpicker.Toggled and UDim2.new(1, 0, 0, 148) or UDim2.new(1, 0, 0, 38)}):Play()
-                    Color.Visible = Colorpicker.Toggled
-                    Hue.Visible = Colorpicker.Toggled
-                    ColorpickerFrame.F.Line.Visible = Colorpicker.Toggled
+				AddConnection(Click.InputBegan, function(Input)
+					if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+						Colorpicker.Toggled = not Colorpicker.Toggled
+						TweenService:Create(ColorpickerFrame,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Size = Colorpicker.Toggled and UDim2.new(1, 0, 0, 148) or UDim2.new(1, 0, 0, 38)}):Play()
+						Color.Visible = Colorpicker.Toggled
+						Hue.Visible = Colorpicker.Toggled
+						ColorpickerFrame.F.Line.Visible = Colorpicker.Toggled
+					end
                 end)
 
                 local function UpdateColorPicker()
