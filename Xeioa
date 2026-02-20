@@ -12,12 +12,12 @@ local OrionLib = {
 	Flags = {},
 	Themes = {
 		Default = {
-			Main = Color3.fromRGB(10, 10, 10), -- Schwarz
-			Second = Color3.fromRGB(20, 20, 20), -- Dunkelgrau
-			Stroke = Color3.fromRGB(160, 32, 240), -- Lila
-			Divider = Color3.fromRGB(255, 20, 147), -- Pink
-			Text = Color3.fromRGB(255, 255, 255), -- Weiß
-			TextDark = Color3.fromRGB(160, 160, 160) -- Light Grey
+			Main = Color3.fromRGB(5, 5, 8), -- Tiefschwarz
+			Second = Color3.fromRGB(16, 8, 22), -- Schwarz mit Lila-Stich
+			Stroke = Color3.fromRGB(221, 74, 255), -- Neon-Lila
+			Divider = Color3.fromRGB(255, 38, 170), -- Neon-Pink
+			Text = Color3.fromRGB(255, 240, 255), -- Helles Rosawhite
+			TextDark = Color3.fromRGB(200, 150, 220) -- Gedimmtes Lila
 		}
 	},
 	SelectedTheme = "Default",
@@ -213,6 +213,49 @@ end
 
 local function UnpackColor(Color)
 	return Color3.fromRGB(Color.R, Color.G, Color.B)
+end
+
+local function AddNeonGradient(Object, ColorA, ColorB, Rotation)
+	local Existing = Object:FindFirstChild("NeonGradient")
+	if Existing then
+		Existing:Destroy()
+	end
+
+	local Gradient = Instance.new("UIGradient")
+	Gradient.Name = "NeonGradient"
+	Gradient.Color = ColorSequence.new({
+		ColorSequenceKeypoint.new(0, ColorA),
+		ColorSequenceKeypoint.new(1, ColorB)
+	})
+	Gradient.Rotation = Rotation or 0
+	Gradient.Parent = Object
+	return Gradient
+end
+
+local function AddPulseStroke(Object, Color, ThicknessA, ThicknessB)
+	local Stroke = Instance.new("UIStroke")
+	Stroke.Name = "NeonPulseStroke"
+	Stroke.Color = Color
+	Stroke.Thickness = ThicknessA or 1.8
+	Stroke.Transparency = 0.15
+	Stroke.Parent = Object
+
+	task.spawn(function()
+		while OrionLib:IsRunning() and Stroke.Parent and Object.Parent do
+			TweenService:Create(Stroke, TweenInfo.new(1.2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+				Thickness = ThicknessB or 2.7,
+				Transparency = 0.45
+			}):Play()
+			task.wait(1.2)
+			TweenService:Create(Stroke, TweenInfo.new(1.2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+				Thickness = ThicknessA or 1.8,
+				Transparency = 0.15
+			}):Play()
+			task.wait(1.2)
+		end
+	end)
+
+	return Stroke
 end
 
 local function LoadCfg(Config)
@@ -630,6 +673,11 @@ function OrionLib:MakeWindow(WindowConfig)
 	local MainStroke = AddThemeObject(MakeElement("Stroke", OrionLib.Themes[OrionLib.SelectedTheme].Stroke, 2), "Stroke")
 	MainStroke.Parent = MainWindow
 
+	AddNeonGradient(MainWindow, Color3.fromRGB(7, 7, 10), Color3.fromRGB(22, 8, 30), 90)
+	AddNeonGradient(MainWindow.TopBar, Color3.fromRGB(255, 38, 170), Color3.fromRGB(140, 40, 255), 35)
+	AddNeonGradient(WindowStuff, Color3.fromRGB(18, 8, 24), Color3.fromRGB(10, 10, 14), 120)
+	AddPulseStroke(MainWindow, Color3.fromRGB(240, 90, 255), 2.2, 3)
+
 	local OpenButton = Create("ImageButton", {
 		Name = "OpenButton",
 		Parent = Orion,
@@ -643,6 +691,8 @@ function OrionLib:MakeWindow(WindowConfig)
 	
 	local OpenButtonStroke = AddThemeObject(MakeElement("Stroke", OrionLib.Themes[OrionLib.SelectedTheme].Stroke, 2), "Stroke")
 	OpenButtonStroke.Parent = OpenButton
+	AddNeonGradient(OpenButton, Color3.fromRGB(255, 38, 170), Color3.fromRGB(150, 30, 255), 45)
+	AddPulseStroke(OpenButton, Color3.fromRGB(255, 110, 214), 1.6, 2.4)
 
 	local OpenButtonCorner = Create("UICorner", {
 		CornerRadius = UDim.new(0, 12),
@@ -1766,3 +1816,4 @@ function OrionLib:Destroy()
 end
 
 return OrionLib
+
