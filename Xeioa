@@ -626,6 +626,53 @@ function OrionLib:MakeWindow(WindowConfig)
 		WindowStuff
 	}), "Main")
 
+	local OpenButton = Create("ImageButton", {
+		Name = "OpenButton",
+		Parent = Orion,
+		Size = UDim2.new(0, 50, 0, 50),
+		Position = UDim2.new(0, 10, 0.5, -25),
+		BackgroundColor3 = Color3.fromRGB(15, 15, 15),
+		BorderColor3 = Color3.fromRGB(160, 32, 240),
+		BorderSizePixel = 2,
+		Visible = false,
+		Image = WindowConfig.Icon or "rbxassetid://8834748103"
+	})
+
+	local OpenButtonCorner = Create("UICorner", {
+		CornerRadius = UDim.new(0, 10),
+		Parent = OpenButton
+	})
+
+	local function AddDraggingToButton(button)
+		local dragging, dragInput, dragStart, startPos
+		button.InputBegan:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				dragging = true
+				dragStart = input.Position
+				startPos = button.Position
+				input.Changed:Connect(function()
+					if input.UserInputState == Enum.UserInputState.End then dragging = false end
+				end)
+			end
+		end)
+		button.InputChanged:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseMovement then dragInput = input end
+		end)
+		UserInputService.InputChanged:Connect(function(input)
+			if dragging and input == dragInput then
+				local delta = input.Position - dragStart
+				button.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+			end
+		end)
+	end
+	AddDraggingToButton(OpenButton)
+
+	OpenButton.MouseButton1Click:Connect(function()
+		MainWindow.Visible = true
+		OpenButton.Visible = false
+		UIHidden = false
+	end)
+
 	if WindowConfig.ShowIcon then
 		WindowName.Position = UDim2.new(0, 50, 0, -24)
 		local WindowIcon = SetProps(MakeElement("Image", WindowConfig.Icon), {
@@ -640,9 +687,10 @@ function OrionLib:MakeWindow(WindowConfig)
 	AddConnection(CloseBtn.MouseButton1Up, function()
 		MainWindow.Visible = false
 		UIHidden = true
+		OpenButton.Visible = true
 		OrionLib:MakeNotification({
 			Name = "Interface Hidden",
-			Content = "Tap RightShift to reopen the interface",
+			Content = "Click the icon to reopen the interface",
 			Time = 5
 		})
 		WindowConfig.CloseCallback()
@@ -651,6 +699,8 @@ function OrionLib:MakeWindow(WindowConfig)
 	AddConnection(UserInputService.InputBegan, function(Input)
 		if Input.KeyCode == Enum.KeyCode.RightShift and UIHidden then
 			MainWindow.Visible = true
+			OpenButton.Visible = false
+			UIHidden = false
 		end
 	end)
 
