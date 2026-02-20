@@ -12,12 +12,12 @@ local OrionLib = {
 	Flags = {},
 	Themes = {
 		Default = {
-		    Main = Color3.fromRGB(15, 15, 15), -- Schwarz
-			Second = Color3.fromRGB(25, 25, 25), -- Dunkelgrau
-			Stroke = Color3.fromRGB(160, 32, 240), -- Lila
-			Divider = Color3.fromRGB(160, 32, 240), -- Lila
-			Text = Color3.fromRGB(255, 255, 255), -- Weiß
-			TextDark = Color3.fromRGB(170, 170, 170) -- Hellgrau
+			Main = Color3.fromRGB(10, 10, 12), -- Deep Dark
+			Second = Color3.fromRGB(18, 18, 22), -- Slightly lighter
+			Stroke = Color3.fromRGB(140, 60, 255), -- Neon Purple
+			Divider = Color3.fromRGB(140, 60, 255), -- Neon Purple
+			Text = Color3.fromRGB(240, 240, 240), -- White
+			TextDark = Color3.fromRGB(160, 160, 160) -- Light Grey
 		}
 	},
 	SelectedTheme = "Default",
@@ -626,20 +626,26 @@ function OrionLib:MakeWindow(WindowConfig)
 		WindowStuff
 	}), "Main")
 
+	-- Add Stroke to Main Window for better aesthetics
+	local MainStroke = AddThemeObject(MakeElement("Stroke", OrionLib.Themes[OrionLib.SelectedTheme].Stroke, 2), "Stroke")
+	MainStroke.Parent = MainWindow
+
 	local OpenButton = Create("ImageButton", {
 		Name = "OpenButton",
 		Parent = Orion,
 		Size = UDim2.new(0, 50, 0, 50),
 		Position = UDim2.new(0, 10, 0.5, -25),
-		BackgroundColor3 = Color3.fromRGB(15, 15, 15),
-		BorderColor3 = Color3.fromRGB(160, 32, 240),
-		BorderSizePixel = 2,
+		BackgroundColor3 = OrionLib.Themes[OrionLib.SelectedTheme].Main,
+		BorderSizePixel = 0,
 		Visible = false,
 		Image = WindowConfig.Icon or "rbxassetid://8834748103"
 	})
+	
+	local OpenButtonStroke = AddThemeObject(MakeElement("Stroke", OrionLib.Themes[OrionLib.SelectedTheme].Stroke, 2), "Stroke")
+	OpenButtonStroke.Parent = OpenButton
 
 	local OpenButtonCorner = Create("UICorner", {
-		CornerRadius = UDim.new(0, 10),
+		CornerRadius = UDim.new(0, 12),
 		Parent = OpenButton
 	})
 
