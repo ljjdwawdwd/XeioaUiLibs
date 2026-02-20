@@ -50,7 +50,7 @@ local function GetIcon(IconName)
 end   
 
 local Orion = Instance.new("ScreenGui")
-Orion.Name = "Orion"
+Orion.Name = "Xeioa"
 if syn then
 	syn.protect_gui(Orion)
 	Orion.Parent = game.CoreGui
@@ -510,7 +510,7 @@ function OrionLib:MakeWindow(WindowConfig)
 	local UIHidden = false
 
 	WindowConfig = WindowConfig or {}
-	WindowConfig.Name = WindowConfig.Name or "Orion Library"
+	WindowConfig.Name = WindowConfig.Name or "Xeioa UI"
 	WindowConfig.ConfigFolder = WindowConfig.ConfigFolder or WindowConfig.Name
 	WindowConfig.SaveConfig = WindowConfig.SaveConfig or false
 	WindowConfig.HidePremium = WindowConfig.HidePremium or false
@@ -520,8 +520,8 @@ function OrionLib:MakeWindow(WindowConfig)
 	WindowConfig.IntroText = WindowConfig.IntroText or "Xeioa"
 	WindowConfig.CloseCallback = WindowConfig.CloseCallback or function() end
 	WindowConfig.ShowIcon = WindowConfig.ShowIcon or false
-	WindowConfig.Icon = WindowConfig.Icon or "rbxassetid://8834748103"
-	WindowConfig.IntroIcon = WindowConfig.IntroIcon or "rbxassetid://8834748103"
+	WindowConfig.Icon = WindowConfig.Icon or "rbxassetid://79325102125999"
+	WindowConfig.IntroIcon = WindowConfig.IntroIcon or "rbxassetid://79325102125999"
 	OrionLib.Folder = WindowConfig.ConfigFolder
 	OrionLib.SaveCfg = WindowConfig.SaveConfig
 
@@ -686,7 +686,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		BackgroundColor3 = OrionLib.Themes[OrionLib.SelectedTheme].Main,
 		BorderSizePixel = 0,
 		Visible = false,
-		Image = WindowConfig.Icon or "rbxassetid://8834748103"
+		Image = WindowConfig.Icon or "rbxassetid://79325102125999"
 	})
 	
 	local OpenButtonStroke = AddThemeObject(MakeElement("Stroke", OrionLib.Themes[OrionLib.SelectedTheme].Stroke, 2), "Stroke")
@@ -1885,6 +1885,7 @@ function OrionLib:Destroy()
 end
 
 return OrionLib
+
 
 
 
