@@ -12,11 +12,11 @@ local OrionLib = {
 	Flags = {},
 	Themes = {
 		Default = {
-			Main = Color3.fromRGB(10, 10, 12), -- Deep Dark
-			Second = Color3.fromRGB(18, 18, 22), -- Slightly lighter
-			Stroke = Color3.fromRGB(140, 60, 255), -- Neon Purple
-			Divider = Color3.fromRGB(140, 60, 255), -- Neon Purple
-			Text = Color3.fromRGB(240, 240, 240), -- White
+			Main = Color3.fromRGB(10, 10, 10), -- Schwarz
+			Second = Color3.fromRGB(20, 20, 20), -- Dunkelgrau
+			Stroke = Color3.fromRGB(160, 32, 240), -- Lila
+			Divider = Color3.fromRGB(255, 20, 147), -- Pink
+			Text = Color3.fromRGB(255, 255, 255), -- Weiß
 			TextDark = Color3.fromRGB(160, 160, 160) -- Light Grey
 		}
 	},
@@ -596,10 +596,6 @@ function OrionLib:MakeWindow(WindowConfig)
 		Size = UDim2.new(0, 615, 0, 344),
 		ClipsDescendants = true
 	}), {
-		Create("UIGradient", {
-			Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1, Color3.fromRGB(180, 180, 180))},
-			Rotation = 45
-		}),
 		--SetProps(MakeElement("Image", "rbxassetid://3523728077"), {
 		--	AnchorPoint = Vector2.new(0.5, 0.5),
 		--	Position = UDim2.new(0.5, 0, 0.5, 0),
